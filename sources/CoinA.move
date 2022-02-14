@@ -1,3 +1,5 @@
+// Approach A: store a ledger of coin owners and modify it
+
 module 0x3::CoinA {
     use Std::Signer;
     use Std::Vector;
@@ -38,7 +40,6 @@ module 0x3::CoinA {
         return i
     }
 
-    // Signer can ask for free coins 
     public fun give_coins(signer: &signer, to_account: address, amount: u64) acquires Holders {
         assert!(Signer::address_of(signer) == OWN_ADDRESS, 1);
         // Update signer balance if all is fine
@@ -48,7 +49,6 @@ module 0x3::CoinA {
         *holder_balance = *holder_balance + amount;
     }
 
-    // Signer can send it's coins to other addresses
     public fun send_to(signer: &signer, to_address: address, amount: u64) acquires Holders {
         assert!(exists<Holders>(OWN_ADDRESS), 3);
 
