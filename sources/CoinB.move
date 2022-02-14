@@ -1,4 +1,5 @@
-// sources/Test.move
+// Approach B: store Coin resource on user's addresses
+
 module 0x3::CoinB {
     use Std::Signer;
     //use Std::Debug;
@@ -13,14 +14,14 @@ module 0x3::CoinB {
         move_to<Coin>(signer, Coin { value: 0 });
     }
 
-    // Signer can ask for free coins 
+
     public fun give_coins(signer: &signer, to_account: address, amount: u64) acquires Coin {
         assert!(Signer::address_of(signer) == OWN_ADDRESS, 2);
         let s_balance = &mut borrow_global_mut<Coin>(to_account).value;
         *s_balance = *s_balance + amount;
     }
 
-    // Signer can send it's coins to other address
+
     public fun send_to(signer: &signer, to_address: address, amount: u64) acquires Coin {
         // if only both have coin wallets
         assert!(exists<Coin>(Signer::address_of(signer)), 3);
